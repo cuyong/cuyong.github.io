@@ -20,30 +20,43 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="直把杭州作汴州">
-<meta property="og:type" content="website">
+  <meta name="description" content="Spring 5内容： 1、Spring概念 2、IOC容器 3、Aop 4、JdbcTemplate 5、事务管理 6、Spring5新特性 一、Spring概念1、Spring是轻量级的开源的Java EE框架 ​    轻量级，体积小 2、Spring可以解决企业应用开发的复杂性 3、Spring有两个核心部分：IOC、Aop（1）IOC：控制反转，把创建对象的过程交给Spring进行管理（">
+<meta property="og:type" content="article">
 <meta property="og:title" content="wen1127&#39;s house">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="http://example.com/2022/04/07/Spring%205/index.html">
 <meta property="og:site_name" content="wen1127&#39;s house">
-<meta property="og:description" content="直把杭州作汴州">
+<meta property="og:description" content="Spring 5内容： 1、Spring概念 2、IOC容器 3、Aop 4、JdbcTemplate 5、事务管理 6、Spring5新特性 一、Spring概念1、Spring是轻量级的开源的Java EE框架 ​    轻量级，体积小 2、Spring可以解决企业应用开发的复杂性 3、Spring有两个核心部分：IOC、Aop（1）IOC：控制反转，把创建对象的过程交给Spring进行管理（">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20210918161947147.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20210925203839664.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20210925203857273.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20210925203929946.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20210925203944712.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20220105201419235.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20220105202033542.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20220105202325741.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20220106142435096.png">
+<meta property="og:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20220106142658953.png">
+<meta property="article:published_time" content="2022-04-07T08:15:40.349Z">
+<meta property="article:modified_time" content="2022-01-06T15:02:56.041Z">
 <meta property="article:author" content="wen1127">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20210918161947147.png">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/04/07/Spring%205/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>wen1127's house</title>
+  <title> | wen1127's house</title>
   
 
 
@@ -171,9 +184,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -189,10 +203,9 @@
       <meta itemprop="name" content="wen1127's house">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
+        <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/07/Spring%205/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -222,7 +235,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Spring-5"><a href="#Spring-5" class="headerlink" title="Spring 5"></a>Spring 5</h1><p>内容：</p>
+        <h1 id="Spring-5"><a href="#Spring-5" class="headerlink" title="Spring 5"></a>Spring 5</h1><p>内容：</p>
 <p>1、Spring概念</p>
 <p>2、IOC容器</p>
 <p>3、Aop</p>
@@ -472,91 +485,30 @@
 
 
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/07/hello-world/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="wen1127">
-      <meta itemprop="description" content="直把杭州作汴州">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wen1127's house">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/07/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-07 15:10:52" itemprop="dateCreated datePublished" datetime="2022-04-07T15:10:52+08:00">2022-04-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/07/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -609,6 +561,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-5"><span class="nav-number">1.</span> <span class="nav-text">Spring 5</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Spring%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">一、Spring概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81IOC%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">二、IOC容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-IOC%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.IOC底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-IOC%E6%8E%A5%E5%8F%A3-BeanFactory"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.IOC接口(BeanFactory)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-IOC%E6%93%8D%E4%BD%9CBean%E7%AE%A1%E7%90%86%EF%BC%88%E5%9F%BA%E4%BA%8Exml"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.IOC操作Bean管理（基于xml)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E4%BB%80%E4%B9%88%E6%98%AFBean%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">3.1 什么是Bean管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-Bean%E7%AE%A1%E7%90%86%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">3.2 Bean管理的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-1%E5%9F%BA%E4%BA%8Exml%E6%96%B9%E5%BC%8F%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.2.3.2.1.</span> <span class="nav-text">3.2.1基于xml方式创建对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-2%E5%9F%BA%E4%BA%8Exml%E6%96%B9%E5%BC%8F%E6%B3%A8%E5%85%A5%E5%B1%9E%E6%80%A7"><span class="nav-number">1.2.3.2.2.</span> <span class="nav-text">3.2.2基于xml方式注入属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-IOC%E6%93%8D%E4%BD%9CBean%E7%AE%A1%E7%90%86%EF%BC%88%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%EF%BC%89"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.IOC操作Bean管理（基于注解）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">4.1 什么是注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-Spring%E9%92%88%E5%AF%B9Bean%E7%AE%A1%E7%90%86%E4%B8%AD%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E6%8F%90%E4%BE%9B%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">4.2 Spring针对Bean管理中创建对象提供注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">4.3 基于注解方式实现对象创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-%E5%BC%80%E5%90%AF%E7%BB%84%E4%BB%B6%E6%89%AB%E6%8F%8F%E4%B8%AD%E7%9A%84%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">4.4 开启组件扫描中的细节问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B1%9E%E6%80%A7%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">4.5 基于注解方式实现属性注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-6-%E5%AE%8C%E5%85%A8%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">4.6 完全注解开发</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81AOP-%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">三、AOP 面向切面编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%9C%AF%E8%AF%AD"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.术语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-AOP%E6%93%8D%E4%BD%9C%EF%BC%88%E5%87%86%E5%A4%87%EF%BC%89"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.AOP操作（准备）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-AOP%E6%93%8D%E4%BD%9C%EF%BC%88AspectJ%E6%B3%A8%E8%A7%A3%EF%BC%89"><span class="nav-number">1.3.5.</span> <span class="nav-text">5.AOP操作（AspectJ注解）</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
