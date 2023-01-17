@@ -17,14 +17,14 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"liketostudy.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Linux基本命令1.学会使用命令帮助1.1.概述在linux终端，面对命令不知道怎么用，或不记得命令的拼写及参数时，我们需要求助于系统的帮助文档； linux系统内置的帮助文档很详细，通常能解决我们的问题，我们需要掌握如何正确的去使用它们；  在只记得部分命令关键字的场合，我们可通过man -k来搜索； 需要知道某个命令的简要说明，可以使用whatis；而更详细的介绍，则可用info命令； 查看">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux基础-01-学会使用命令帮助">
-<meta property="og:url" content="http://example.com/2022/08/23/Linux%E5%9F%BA%E7%A1%80-01-%E5%AD%A6%E4%BC%9A%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9/index.html">
-<meta property="og:site_name" content="wen1127&#39;s house">
+<meta property="og:url" content="http://liketostudy.com/2022/08/23/Linux%E5%9F%BA%E7%A1%80-01-%E5%AD%A6%E4%BC%9A%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9/index.html">
+<meta property="og:site_name" content="琛的个人博客">
 <meta property="og:description" content="Linux基本命令1.学会使用命令帮助1.1.概述在linux终端，面对命令不知道怎么用，或不记得命令的拼写及参数时，我们需要求助于系统的帮助文档； linux系统内置的帮助文档很详细，通常能解决我们的问题，我们需要掌握如何正确的去使用它们；  在只记得部分命令关键字的场合，我们可通过man -k来搜索； 需要知道某个命令的简要说明，可以使用whatis；而更详细的介绍，则可用info命令； 查看">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20220823193033900.png">
@@ -34,7 +34,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20220823193033900.png">
 
-<link rel="canonical" href="http://example.com/2022/08/23/Linux%E5%9F%BA%E7%A1%80-01-%E5%AD%A6%E4%BC%9A%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9/">
+<link rel="canonical" href="http://liketostudy.com/2022/08/23/Linux%E5%9F%BA%E7%A1%80-01-%E5%AD%A6%E4%BC%9A%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9/">
 
 
 <script id="page-configurations">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>Linux基础-01-学会使用命令帮助 | wen1127's house</title>
+  <title>Linux基础-01-学会使用命令帮助 | 琛的个人博客</title>
   
 
 
@@ -98,7 +98,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">wen1127's house</h1>
+      <h1 class="site-title">琛的个人博客</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -182,16 +182,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/23/Linux%E5%9F%BA%E7%A1%80-01-%E5%AD%A6%E4%BC%9A%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9/">
+    <link itemprop="mainEntityOfPage" href="http://liketostudy.com/2022/08/23/Linux%E5%9F%BA%E7%A1%80-01-%E5%AD%A6%E4%BC%9A%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="wen1127">
-      <meta itemprop="description" content="直把杭州作汴州">
+      <meta itemprop="description" content="百学须先立志">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wen1127's house">
+      <meta itemprop="name" content="琛的个人博客">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -355,7 +355,7 @@
     <img class="site-author-image" itemprop="image" alt="wen1127"
       src="/images/avatar.gif">
   <p class="site-author-name" itemprop="name">wen1127</p>
-  <div class="site-description" itemprop="description">直把杭州作汴州</div>
+  <div class="site-description" itemprop="description">百学须先立志</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
