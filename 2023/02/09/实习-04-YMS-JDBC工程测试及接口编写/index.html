@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"liketostudy.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1.git拉取yms-library项目 1.1.问题运行报错找不到sql.translator.impl 询问诗涵解决  已解决 2.进行test排查异常报错等2.1.测试过程测试test.BaseDAOTest#testUpdate 存疑 有问题（已解决）  测试test.BaseDAOTest#testUpdate3 同上 测试test.BaseDAOTest#testUpdate2 同上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实习-04-YMS-JDBC工程测试及接口编写">
+<meta property="og:url" content="http://liketostudy.com/2023/02/09/%E5%AE%9E%E4%B9%A0-04-YMS-JDBC%E5%B7%A5%E7%A8%8B%E6%B5%8B%E8%AF%95%E5%8F%8A%E6%8E%A5%E5%8F%A3%E7%BC%96%E5%86%99/index.html">
+<meta property="og:site_name" content="琛的个人博客">
+<meta property="og:description" content="1.git拉取yms-library项目 1.1.问题运行报错找不到sql.translator.impl 询问诗涵解决  已解决 2.进行test排查异常报错等2.1.测试过程测试test.BaseDAOTest#testUpdate 存疑 有问题（已解决）  测试test.BaseDAOTest#testUpdate3 同上 测试test.BaseDAOTest#testUpdate2 同上">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209103638993.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209103722555.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209110353196.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209135614895.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209135550209.png">
+<meta property="og:image" content="http://liketostudy.com/.com//Users/温家琛/AppData/Roaming/Typora/typora-user-images/image-20230209135745373.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209143756540.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209143805344.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209144618751.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209144735753.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209144933387.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209144857363.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209150237331.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230213162630405.png">
+<meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230213162720140.png">
+<meta property="article:published_time" content="2023-02-09T07:22:57.000Z">
+<meta property="article:modified_time" content="2023-02-14T07:49:48.314Z">
+<meta property="article:author" content="文晨">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209103638993.png">
+
+<link rel="canonical" href="http://liketostudy.com/2023/02/09/%E5%AE%9E%E4%B9%A0-04-YMS-JDBC%E5%B7%A5%E7%A8%8B%E6%B5%8B%E8%AF%95%E5%8F%8A%E6%8E%A5%E5%8F%A3%E7%BC%96%E5%86%99/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>实习-04-YMS-JDBC工程测试及接口编写 | 琛的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">琛的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="download fa-fw"></i>资源</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://liketostudy.com/2023/02/09/%E5%AE%9E%E4%B9%A0-04-YMS-JDBC%E5%B7%A5%E7%A8%8B%E6%B5%8B%E8%AF%95%E5%8F%8A%E6%8E%A5%E5%8F%A3%E7%BC%96%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="文晨">
+      <meta itemprop="description" content="百学须先立志">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="琛的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          实习-04-YMS-JDBC工程测试及接口编写
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-02-09 15:22:57" itemprop="dateCreated datePublished" datetime="2023-02-09T15:22:57+08:00">2023-02-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-02-14 15:49:48" itemprop="dateModified" datetime="2023-02-14T15:49:48+08:00">2023-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%9E%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">实习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-git拉取yms-library项目"><a href="#1-git拉取yms-library项目" class="headerlink" title="1.git拉取yms-library项目"></a>1.git拉取yms-library项目</h1><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209103638993.png" alt="image-20230209103638993"></p>
+<h2 id="1-1-问题"><a href="#1-1-问题" class="headerlink" title="1.1.问题"></a>1.1.问题</h2><p>运行报错找不到sql.translator.impl</p>
+<p>询问诗涵解决</p>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209103722555.png" alt="image-20230209103722555"></p>
+<p>已解决</p>
+<h1 id="2-进行test排查异常报错等"><a href="#2-进行test排查异常报错等" class="headerlink" title="2.进行test排查异常报错等"></a>2.进行test排查异常报错等</h1><h3 id="2-1-测试过程"><a href="#2-1-测试过程" class="headerlink" title="2.1.测试过程"></a>2.1.测试过程</h3><h5 id="测试test-BaseDAOTest-testUpdate"><a href="#测试test-BaseDAOTest-testUpdate" class="headerlink" title="测试test.BaseDAOTest#testUpdate"></a>测试test.BaseDAOTest#testUpdate</h5><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209110353196.png" alt="image-20230209110353196"></p>
+<p>存疑 有问题（已解决）</p>
+<blockquote>
+<p>测试test.BaseDAOTest#testUpdate3</p>
+<p>同上</p>
+<p>测试test.BaseDAOTest#testUpdate2</p>
+<p>同上</p>
+</blockquote>
+<h5 id="测试test-BaseDAOTest-testUpdate4"><a href="#测试test-BaseDAOTest-testUpdate4" class="headerlink" title="测试test.BaseDAOTest#testUpdate4"></a>测试test.BaseDAOTest#testUpdate4</h5><blockquote>
+<p>测试成功，实现update持久化</p>
+</blockquote>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209135614895.png" alt="image-20230209135614895"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testUpdate4</span><span class="params">()</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="type">SQLParameter</span> <span class="variable">parameter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SQLParameter</span>();</span><br><span class="line">    parameter.addParam(<span class="string">&quot;btax_test5&quot;</span>);</span><br><span class="line">    parameter.addParam(<span class="string">&quot;0000026a-f46f-4eee-98a7-ff4d4114bcf3&quot;</span>);</span><br><span class="line">    parameter.addParam(<span class="string">&quot;2022-07-21 18:45:09.0&quot;</span>);</span><br><span class="line">    baseDAO.update(<span class="string">&quot;update ipuquotation_test set btax=? where ipuquotaionid=? and pubts=? &quot;</span>, parameter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><input disabled type="checkbox"> 梳理流程</li>
+</ul>
+<h5 id="测试test-BaseDAOTest-testSaveWithPk"><a href="#测试test-BaseDAOTest-testSaveWithPk" class="headerlink" title="测试test.BaseDAOTest#testSaveWithPk"></a>测试test.BaseDAOTest#testSaveWithPk</h5><blockquote>
+<p>测试成功</p>
+</blockquote>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209135550209.png" alt="image-20230209135550209"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testSaveWithPk</span><span class="params">()</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="comment">//IpuQuotation quotation = baseDAO.queryByPK(IpuQuotation.class, &quot;2&quot;, new String[]&#123;&quot;ipuquotaionid&quot;, &quot;btax&quot;&#125;);</span></span><br><span class="line">    <span class="type">IpuQuotation</span> <span class="variable">quotation1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IpuQuotation</span>();</span><br><span class="line">    quotation1.setBtax(<span class="string">&quot;btax_test&quot;</span>);</span><br><span class="line">    quotation1.setIpuquotaionid(<span class="string">&quot;5&quot;</span>);</span><br><span class="line">    baseDAO.insertWithPK(quotation1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><input disabled type="checkbox"> 梳理流程</li>
+</ul>
+<h5 id="测试test-BaseDAOTest-testSave"><a href="#测试test-BaseDAOTest-testSave" class="headerlink" title="测试test.BaseDAOTest#testSave"></a>测试test.BaseDAOTest#testSave</h5><blockquote>
+<p>测试成功</p>
+</blockquote>
+<p><img src="/.com//Users\温家琛\AppData\Roaming\Typora\typora-user-images\image-20230209135745373.png" alt="image-20230209135745373"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testSave</span><span class="params">()</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="type">IpuQuotation</span> <span class="variable">quotation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IpuQuotation</span>();</span><br><span class="line">    quotation.setBtax(<span class="string">&quot;btax_test1&quot;</span>);</span><br><span class="line">    quotation.setIpuquotaionid(<span class="string">&quot;test_save12&quot;</span>);</span><br><span class="line">    baseDAO.insert(quotation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><input disabled type="checkbox"> 梳理流程</li>
+</ul>
+<h5 id="测试test-BaseDAOTest-testSaveList"><a href="#测试test-BaseDAOTest-testSaveList" class="headerlink" title="测试test.BaseDAOTest#testSaveList"></a>测试test.BaseDAOTest#testSaveList</h5><h5 id="测试test-BaseDAOTest-testSaveList2"><a href="#测试test-BaseDAOTest-testSaveList2" class="headerlink" title="测试test.BaseDAOTest#testSaveList2"></a>测试test.BaseDAOTest#testSaveList2</h5><h5 id="测试test-BaseDAOTest-testDelete"><a href="#测试test-BaseDAOTest-testDelete" class="headerlink" title="测试test.BaseDAOTest#testDelete"></a>测试test.BaseDAOTest#testDelete</h5><blockquote>
+<p>测试成功</p>
+</blockquote>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209143756540.png" alt="image-20230209143756540"></p>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209143805344.png" alt="image-20230209143805344"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testDelete</span><span class="params">()</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">IpuQuotation</span> <span class="variable">ipuQuotation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IpuQuotation</span>();</span><br><span class="line">    ipuQuotation.setIpuquotaionid(<span class="string">&quot;test2&quot;</span>);</span><br><span class="line">    <span class="keyword">final</span> <span class="type">IpuQuotation</span> <span class="variable">ipuQuotation2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IpuQuotation</span>();</span><br><span class="line">    ipuQuotation2.setIpuquotaionid(<span class="string">&quot;test1&quot;</span>);</span><br><span class="line">    baseDAO.remove(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;IpuQuotation&gt;() &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            add(ipuQuotation);</span><br><span class="line">            add(ipuQuotation2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="测试test-BaseDAOTest-testQueryAll"><a href="#测试test-BaseDAOTest-testQueryAll" class="headerlink" title="测试test.BaseDAOTest#testQueryAll"></a>测试test.BaseDAOTest#testQueryAll</h5><blockquote>
+<p>测试成功</p>
+</blockquote>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209144618751.png" alt="image-20230209144618751"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testQueryAll</span><span class="params">()</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="type">IpuQuotation</span> <span class="variable">ipuQuotation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IpuQuotation</span>();</span><br><span class="line">    List&lt;IpuQuotation&gt; quotation = baseDAO.queryAll(ipuQuotation);</span><br><span class="line">    System.out.println(quotation.size());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="测试test-BaseDAOTest-testQueryByClause"><a href="#测试test-BaseDAOTest-testQueryByClause" class="headerlink" title="测试test.BaseDAOTest#testQueryByClause"></a>测试test.BaseDAOTest#testQueryByClause</h5><blockquote>
+<p>测试成功</p>
+</blockquote>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209144735753.png" alt="image-20230209144735753"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testQueryByClause2</span><span class="params">()</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="type">SQLParameter</span> <span class="variable">parameter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SQLParameter</span>();</span><br><span class="line">    parameter.addParam(<span class="string">&quot;btax_test&quot;</span>);</span><br><span class="line">    <span class="type">IpuQuotation</span> <span class="variable">ipuQuotation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IpuQuotation</span>();</span><br><span class="line">    List&lt;IpuQuotation&gt; ipuQuotations =</span><br><span class="line">            baseDAO.queryByClause(ipuQuotation, <span class="string">&quot;select * from ipuquotation_test&quot;</span> + <span class="string">&quot; where btax=?&quot;</span>,</span><br><span class="line">                    parameter);</span><br><span class="line">    System.out.println(ipuQuotations.size());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="测试test-BaseDAOTest-testQueryByClause2"><a href="#测试test-BaseDAOTest-testQueryByClause2" class="headerlink" title="测试test.BaseDAOTest#testQueryByClause2"></a>测试test.BaseDAOTest#testQueryByClause2</h5><blockquote>
+<p>测试成功</p>
+</blockquote>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209144933387.png" alt="image-20230209144933387"></p>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209144857363.png" alt="image-20230209144857363"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testQueryByClause2</span><span class="params">()</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="type">SQLParameter</span> <span class="variable">parameter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SQLParameter</span>();</span><br><span class="line">    parameter.addParam(<span class="string">&quot;btax_test&quot;</span>);</span><br><span class="line">    <span class="type">IpuQuotation</span> <span class="variable">ipuQuotation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IpuQuotation</span>();</span><br><span class="line">    List&lt;IpuQuotation&gt; ipuQuotations =</span><br><span class="line">            baseDAO.queryByClause(ipuQuotation, <span class="string">&quot;select * from ipuquotation_test&quot;</span> + <span class="string">&quot; where btax=?&quot;</span>,</span><br><span class="line">                    parameter);</span><br><span class="line">    System.out.println(ipuQuotations.size());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-2-问题梳理总结"><a href="#2-2-问题梳理总结" class="headerlink" title="2.2.问题梳理总结"></a>2.2.问题梳理总结</h3><p>queryByPK</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testUpdate</span><span class="params">()</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="type">IpuQuotation</span> <span class="variable">ipuQuotation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IpuQuotation</span>();</span><br><span class="line">    <span class="type">IpuQuotation</span> <span class="variable">quotation</span> <span class="operator">=</span> baseDAO.queryByPK(ipuQuotation, <span class="string">&quot;2&quot;</span>);</span><br><span class="line">    quotation.setBtax(<span class="string">&quot;btax_test4&quot;</span>);</span><br><span class="line">    baseDAO.update(quotation, <span class="keyword">new</span> <span class="title class_">String</span>[]&#123;<span class="string">&quot;btax&quot;</span>&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>com.yonyou.iuap.yms.dao.AbstractDAO#queryByPK(com.yonyou.iuap.yms.param.BaseEntity, ID)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据PK查询指定VO</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> baseEntity</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pk        主键</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T <span class="title function_">queryByPK</span><span class="params">(BaseEntity baseEntity, ID pk)</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="keyword">return</span> queryByPK(baseEntity, pk, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>com.yonyou.iuap.yms.dao.AbstractDAO#queryByPK(com.yonyou.iuap.yms.param.BaseEntity, ID, java.lang.String[])</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据主键返回指定列的VO对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T <span class="title function_">queryByPK</span><span class="params">(BaseEntity baseEntity, ID pk, String[] selectedFields)</span> <span class="keyword">throws</span> DAOException &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        manager = createPersistenceManager();</span><br><span class="line">        <span class="keyword">return</span> (T) manager.retrieveByPK(baseEntity, pk, selectedFields);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(e.getMessage(), e);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">DAOException</span>(e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>com.yonyou.iuap.yms.jdbc.AbstractJdbcPersistenceManager#retrieveByPK(com.yonyou.iuap.yms.param.BaseEntity, ID, java.lang.String[])</p>
+<blockquote>
+<p>Entity entity &#x3D; MetaEntityHelper.getMetaEntity(fullName);</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据主键查询</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> &lt;T, ID&gt; T <span class="title function_">retrieveByPK</span><span class="params">(BaseEntity baseEntity, ID pk, String[] selectedFields)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">if</span> (pk == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;pk is null&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">ormAttributeSign</span> <span class="operator">=</span> BeanDataOperateHelper.initOrmAttributeSign(baseEntity);</span><br><span class="line">    Map&lt;String, Object&gt; resultMap = <span class="literal">null</span>;</span><br><span class="line">    <span class="type">SQLParameter</span> <span class="variable">param</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SQLParameter</span>();</span><br><span class="line">    param.addParam(pk);</span><br><span class="line">    <span class="type">Class</span> <span class="variable">clz</span> <span class="operator">=</span> baseEntity.getClass();</span><br><span class="line">    <span class="type">String</span> <span class="variable">fullName</span> <span class="operator">=</span> baseEntity.getFullName();</span><br><span class="line">    Map&lt;String, ORMColumnInfo&gt; types = findColumnInfo(clz, fullName);</span><br><span class="line">    <span class="type">Entity</span> <span class="variable">entity</span> <span class="operator">=</span> MetaEntityHelper.getMetaEntity(fullName);</span><br><span class="line">    List&lt;Property&gt; elasticAttributes = entity.getElasticAttributes();</span><br><span class="line">    <span class="comment">//buildSQL</span></span><br><span class="line">    <span class="keyword">for</span> (Property elasticProperty : elasticAttributes) &#123;</span><br><span class="line">        types.remove(elasticProperty.columnName());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">StringBuffer</span> <span class="variable">columnsForQuery</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">    <span class="keyword">for</span> (String columnName : types.keySet()) &#123;</span><br><span class="line">        columnsForQuery.append(columnName).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    columnsForQuery.delete(columnsForQuery.length() - <span class="number">1</span>, columnsForQuery.length());</span><br><span class="line"></span><br><span class="line">    List&lt;OneToOneType&gt; parallelTypes = BizMetaHelper.getOneToOneField(baseEntity, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">    List&lt;OneToOneType&gt; characteristicTypes = BeanProcessorHelper.getCharacteristicOneToOneField(fullName);</span><br><span class="line">    <span class="type">String</span> <span class="variable">condition</span> <span class="operator">=</span> BeanProcessorHelper.getPkColumn(baseEntity.getClass(), baseEntity.getFullName()) + <span class="string">&quot;=?&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.isEmpty(parallelTypes) &amp;&amp; CollectionUtils.isEmpty(characteristicTypes)) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">pkName</span> <span class="operator">=</span> BeanProcessorHelper.getPkColumn(clz, fullName);</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">hasPKField</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">StringBuffer</span> <span class="variable">mainSQL</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">        <span class="type">String</span> <span class="variable">tableName</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(clz, fullName);</span><br><span class="line">        <span class="keyword">if</span> (selectedFields == <span class="literal">null</span>) &#123;</span><br><span class="line">            mainSQL.append(<span class="string">&quot;SELECT &quot;</span>).append(columnsForQuery).append(<span class="string">&quot; FROM &quot;</span>).append(tableName);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">            selectedFields = transPropertyNameToFieldNames(clz, fullName, selectedFields);</span><br><span class="line">            String[] columns = getValidNames(fullName, clz, types, baseEntity, selectedFields);</span><br><span class="line">            mainSQL.append(<span class="string">&quot;SELECT &quot;</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; columns.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (columns[i] != <span class="literal">null</span>) &#123;</span><br><span class="line">                    mainSQL.append(columns[i]).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">                    <span class="keyword">if</span> (columns[i].equalsIgnoreCase(pkName)) &#123;</span><br><span class="line">                        hasPKField = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!hasPKField) &#123;</span><br><span class="line">                mainSQL.append(pkName).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            mainSQL.setLength(mainSQL.length() - <span class="number">1</span>);</span><br><span class="line">            mainSQL.append(<span class="string">&quot; FROM &quot;</span>).append(tableName);</span><br><span class="line">        &#125;</span><br><span class="line">        mainSQL.append(<span class="string">&quot; WHERE &quot;</span>).append(condition);</span><br><span class="line">        <span class="type">BaseProcessor</span> <span class="variable">processor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanListProcessor</span>(baseEntity);</span><br><span class="line">        List&lt;T&gt; results = getJdbcSession().executeQuery(mainSQL.toString(), param, processor);</span><br><span class="line">        <span class="keyword">if</span> (results.size() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">            result = results.get(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;query for oneToOne .. &#123;&#125; &quot;</span>, clz.getClasses());</span><br><span class="line">        &#125;</span><br><span class="line">        Field[] fields = baseEntity.getClass().getDeclaredFields();</span><br><span class="line">        String[] propNames = <span class="keyword">new</span> <span class="title class_">String</span>[fields.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; fields.length; i++) &#123;</span><br><span class="line">            propNames[i] = fields[i].getName();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">pkName</span> <span class="operator">=</span> BeanProcessorHelper.getPkColumn(clz, fullName);</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">hasPKField</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">StringBuffer</span> <span class="variable">mainSQL</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">        <span class="type">String</span> <span class="variable">tableName</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(clz, fullName);</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">mapSQL</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        mapSQL.append(<span class="string">&quot;SELECT * FROM &quot;</span>).append(tableName).append(<span class="string">&quot; WHERE &quot;</span>).append(condition);</span><br><span class="line">        List&lt;Map&gt; mapList = getJdbcSession().executeQuery(mapSQL.toString(), param, <span class="keyword">new</span> <span class="title class_">MapListProcessor</span>());</span><br><span class="line">        <span class="keyword">if</span> (mapList.size() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">            resultMap = mapList.get(<span class="number">0</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;查询结果为空！&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (selectedFields == <span class="literal">null</span>) &#123;</span><br><span class="line">            mainSQL.append(<span class="string">&quot;SELECT &quot;</span>).append(columnsForQuery).append(<span class="string">&quot; FROM &quot;</span>).append(tableName).append(<span class="string">&quot; WHERE &quot;</span>).append(condition);</span><br><span class="line">            List&lt;T&gt; results = getJdbcSession().executeQuery(mainSQL.toString(), param, <span class="keyword">new</span> <span class="title class_">BeanListProcessor</span>(baseEntity));</span><br><span class="line">            <span class="keyword">if</span> (results.size() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">                result = results.get(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//特征</span></span><br><span class="line">            <span class="keyword">for</span> (OneToOneType oneToOneType : characteristicTypes) &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">childSQL</span> <span class="operator">=</span> buildSQLWithoutSelectFields(oneToOneType, clz, fullName, resultMap);</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotEmpty(childSQL)) &#123;</span><br><span class="line">                    characteristicEntityHandler(baseEntity, childSQL, fullName, result, ormAttributeSign);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//平行</span></span><br><span class="line">            <span class="keyword">for</span> (OneToOneType oneToOneType : parallelTypes) &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">childTable</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(oneToOneType.getTargetEntity(), oneToOneType.getTargetFullName());</span><br><span class="line">                <span class="type">String</span> <span class="variable">childSQL</span> <span class="operator">=</span> buildSQLWithoutSelectFields(oneToOneType, clz, fullName, resultMap);</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotEmpty(childSQL)) &#123;</span><br><span class="line">                    parallelEntityHandler(baseEntity, childSQL, childTable, result, ormAttributeSign);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String[] filterFileds = transPropertyNameToFieldNames(clz, fullName, selectedFields);</span><br><span class="line">            Set&lt;String&gt; filerdFieldSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">            filerdFieldSet.addAll(Arrays.asList(filterFileds));</span><br><span class="line">            <span class="type">StringBuilder</span> <span class="variable">columnBuilder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; filterFileds.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (filterFileds[i] != <span class="literal">null</span>) &#123;</span><br><span class="line">                    columnBuilder.append(filterFileds[i]).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">                    <span class="keyword">if</span> (filterFileds[i].equalsIgnoreCase(pkName)) &#123;</span><br><span class="line">                        hasPKField = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            columnBuilder.append(<span class="string">&quot;pubts&quot;</span>).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">            columnBuilder.append(<span class="string">&quot;dr&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (!hasPKField) &#123;</span><br><span class="line">                columnBuilder.append(<span class="string">&quot;,&quot;</span>).append(pkName);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">StringBuilder</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">            sql.append(<span class="string">&quot;SELECT &quot;</span>).append(columnBuilder).append(<span class="string">&quot; FROM &quot;</span>).append(tableName).append(<span class="string">&quot; WHERE &quot;</span>).append(condition);</span><br><span class="line">            <span class="type">BaseProcessor</span> <span class="variable">processor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanListProcessor</span>(baseEntity);</span><br><span class="line">            List&lt;T&gt; results = getJdbcSession().executeQuery(sql.toString(), param, processor);</span><br><span class="line">            <span class="keyword">if</span> (results.size() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">                result = results.get(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//特征</span></span><br><span class="line">            <span class="keyword">for</span> (OneToOneType oneToOneType : characteristicTypes) &#123;</span><br><span class="line">                <span class="type">Class</span> <span class="variable">childClz</span> <span class="operator">=</span> oneToOneType.getTargetEntity();</span><br><span class="line">                <span class="type">String</span> <span class="variable">childTable</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(childClz, oneToOneType.getTargetFullName());</span><br><span class="line">                <span class="type">String</span> <span class="variable">childSQL</span> <span class="operator">=</span> buildSQLWithSelectedFields(oneToOneType, clz, fullName, selectedFields, resultMap, childTable);</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotEmpty(childSQL)) &#123;</span><br><span class="line">                    characteristicEntityHandler(baseEntity, childSQL, fullName, result, ormAttributeSign);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//平行</span></span><br><span class="line">            <span class="keyword">for</span> (OneToOneType oneToOneType : parallelTypes) &#123;</span><br><span class="line">                <span class="type">Class</span> <span class="variable">childClz</span> <span class="operator">=</span> oneToOneType.getTargetEntity();</span><br><span class="line">                <span class="type">String</span> <span class="variable">childTable</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(childClz, oneToOneType.getTargetFullName());</span><br><span class="line">                <span class="type">String</span> <span class="variable">childSQL</span> <span class="operator">=</span> buildSQLWithSelectedFields(oneToOneType, clz, fullName, selectedFields, resultMap, childTable);</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotEmpty(childSQL)) &#123;</span><br><span class="line">                    parallelEntityHandler(baseEntity, childSQL, childTable, result, ormAttributeSign);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>com.yonyou.iuap.yms.imeta.MetaEntityHelper#getMetaEntity</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据fullName获取元数据信息</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> fullName</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Entity <span class="title function_">getMetaEntity</span><span class="params">(String fullName)</span> &#123;</span><br><span class="line">    <span class="type">Entity</span> <span class="variable">entity</span> <span class="operator">=</span> BizContext.getMetaRepository().entity(fullName);</span><br><span class="line">    <span class="keyword">if</span> (entity == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;can&#x27;t get the meta info of&quot;</span> + fullName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> entity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>BizContext.getMetaRepository()得到的是空指针，因此出现异常</p>
+<h3 id="2-3-解决方案"><a href="#2-3-解决方案" class="headerlink" title="2.3.解决方案"></a>2.3.解决方案</h3><blockquote>
+<p>询问张健</p>
+</blockquote>
+<ul>
+<li>找到yms-jdbc-biz模块</li>
+<li>找到src&#x2F;test&#x2F;java&#x2F;imetatest&#x2F;MetaEntityHelperTest.java</li>
+<li>找到com.yonyou.iuap.yms.imeta.MetaEntityHelper</li>
+<li>将前者的类文件内容拷贝至后者中即可</li>
+</ul>
+<h3 id="2-4-YMS控制台配置数据源（诗涵解决）"><a href="#2-4-YMS控制台配置数据源（诗涵解决）" class="headerlink" title="2.4.YMS控制台配置数据源（诗涵解决）"></a>2.4.YMS控制台配置数据源（诗涵解决）</h3><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230209150237331.png" alt="image-20230209150237331"></p>
+<h1 id="3-编写接口queryByUnionKeyMap实现联合查询"><a href="#3-编写接口queryByUnionKeyMap实现联合查询" class="headerlink" title="3.编写接口queryByUnionKeyMap实现联合查询"></a>3.编写接口queryByUnionKeyMap实现联合查询</h1><h3 id="3-1-需求"><a href="#3-1-需求" class="headerlink" title="3.1.需求"></a>3.1.需求</h3><p>public <T> T queryByUnionKeyMap(BaseEntity baseEntity, Map&lt;String,Object&gt; unionKeyMap, String[] selectedFields) throws BusinessException;</T></p>
+<p>实现：</p>
+<p>select name,id from table where id&#x3D;1;</p>
+<p>map.put(“id”,1)<br>map.put(“ytenant_id”,1)<br>map.put(“dr”,1)<br>select name,id from table where id&#x3D;1 and ytenant_id&#x3D;aaa and dr&#x3D;1</p>
+<h3 id="3-2-代码"><a href="#3-2-代码" class="headerlink" title="3.2.代码"></a>3.2.代码</h3><h5 id="IYmsJdbcApi-queryByUnionKeyMap"><a href="#IYmsJdbcApi-queryByUnionKeyMap" class="headerlink" title="IYmsJdbcApi#queryByUnionKeyMap"></a>IYmsJdbcApi#queryByUnionKeyMap</h5><blockquote>
+<p>com.yonyou.iuap.yms.api.IYmsJdbcApi#queryByUnionKeyMap</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据Map查询数据，只返回指定字段的数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> baseEntity</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> unionKeyMap</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> selectedFields</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> BusinessException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T <span class="title function_">queryByUnionKeyMap</span><span class="params">(BaseEntity baseEntity, Map&lt;String,Object&gt; unionKeyMap, String[] selectedFields)</span> <span class="keyword">throws</span> BusinessException;</span><br></pre></td></tr></table></figure>
+
+<h5 id="AbstractDAO-queryByUnionKeyMap-amp-queryByUnionKeyMap"><a href="#AbstractDAO-queryByUnionKeyMap-amp-queryByUnionKeyMap" class="headerlink" title="AbstractDAO#queryByUnionKeyMap&amp;queryByUnionKeyMap"></a>AbstractDAO#queryByUnionKeyMap&amp;queryByUnionKeyMap</h5><blockquote>
+<p>com.yonyou.iuap.yms.dao.AbstractDAO#<strong>queryByUnionKeyMap</strong>(com.yonyou.iuap.yms.param.BaseEntity, java.util.Map&lt;java.lang.String,java.lang.Object&gt;)以及com.yonyou.iuap.yms.dao.AbstractDAO#<strong>queryByUnionKeyMap</strong>(com.yonyou.iuap.yms.param.BaseEntity, java.util.Map&lt;java.lang.String,java.lang.Object&gt;, java.lang.String[])</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据主键列表查询数据，查询指定VO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> baseEntity</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> unionKeyMap</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> BusinessException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T <span class="title function_">queryByUnionKeyMap</span><span class="params">(BaseEntity baseEntity, Map&lt;String, Object&gt; unionKeyMap)</span> <span class="keyword">throws</span> BusinessException &#123;</span><br><span class="line">    <span class="keyword">return</span> queryByUnionKeyMap(baseEntity, unionKeyMap, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据主键列表查询数据，返回指定列的VO对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> baseEntity</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> unionKeyMap</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> selectedFields</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> BusinessException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T <span class="title function_">queryByUnionKeyMap</span><span class="params">(BaseEntity baseEntity, Map&lt;String, Object&gt; unionKeyMap, String[] selectedFields)</span> <span class="keyword">throws</span> BusinessException &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        manager = createPersistenceManager();</span><br><span class="line">        <span class="keyword">return</span> (T) manager.retrieveByUnionKeyMap(baseEntity, unionKeyMap, selectedFields);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(e.getMessage(), e);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">DAOException</span>(e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="AbstractJdbcPersistenceManager-retrieveByPK-amp-retrieveByUnionKeyMap"><a href="#AbstractJdbcPersistenceManager-retrieveByPK-amp-retrieveByUnionKeyMap" class="headerlink" title="AbstractJdbcPersistenceManager#retrieveByPK&amp;retrieveByUnionKeyMap"></a>AbstractJdbcPersistenceManager#retrieveByPK&amp;retrieveByUnionKeyMap</h5><blockquote>
+<p>com.yonyou.iuap.yms.jdbc.AbstractJdbcPersistenceManager#<strong>retrieveByPK</strong>(com.yonyou.iuap.yms.param.BaseEntity, ID, java.lang.String[])以及com.yonyou.iuap.yms.jdbc.AbstractJdbcPersistenceManager#<strong>retrieveByUnionKeyMap</strong>(com.yonyou.iuap.yms.param.BaseEntity, java.util.Map&lt;java.lang.String,java.lang.Object&gt;)</p>
+</blockquote>
+<blockquote>
+<p>修改原方法<strong>retrieveByPK</strong>()，添加现方法<strong>retrieveByUnionKeyMap</strong>()</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据主键查询</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> &lt;T, ID&gt; T <span class="title function_">retrieveByPK</span><span class="params">(BaseEntity baseEntity, ID pk)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">return</span> retrieveByPK(baseEntity, pk, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据主键查询</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> &lt;T, ID&gt; T <span class="title function_">retrieveByPK</span><span class="params">(BaseEntity baseEntity, ID pk, String[] selectedFields)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">if</span> (pk == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;pk is null&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    Map&lt;String, Object&gt; unionKeyMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    unionKeyMap.put(BeanProcessorHelper.getPkColumn(baseEntity.getClass(), baseEntity.getFullName()), pk);</span><br><span class="line">    <span class="comment">//直接调用联合查询方法</span></span><br><span class="line">    result = retrieveByUnionKeyMap(baseEntity, unionKeyMap, selectedFields);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 联合查询，返回指定字段数据</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T <span class="title function_">retrieveByUnionKeyMap</span><span class="params">(BaseEntity baseEntity, Map&lt;String, Object&gt; unionKeyMap)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">return</span> retrieveByUnionKeyMap(baseEntity, unionKeyMap, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 联合查询，返回指定字段数据</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T <span class="title function_">retrieveByUnionKeyMap</span><span class="params">(BaseEntity baseEntity, Map&lt;String, Object&gt; unionKeyMap, String[] selectedFields)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="comment">//先判断传入的unionKeyMap是否为空，如果为空返回</span></span><br><span class="line">    <span class="keyword">if</span> (unionKeyMap == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;unionKeyMap is null&quot;</span>); <span class="comment">//pk改为unionKeyMap</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">ormAttributeSign</span> <span class="operator">=</span> BeanDataOperateHelper.initOrmAttributeSign(baseEntity);</span><br><span class="line">    Map&lt;String, Object&gt; resultMap = <span class="literal">null</span>;</span><br><span class="line">    <span class="type">SQLParameter</span> <span class="variable">param</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SQLParameter</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//遍历Map的Key和Value，Key加入到临时conditionList中，Value加入到param.paramList中</span></span><br><span class="line">    List&lt;String&gt; conditionList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span>(Map.Entry&lt;String, Object&gt; entry : unionKeyMap.entrySet())&#123;</span><br><span class="line">        conditionList.add(entry.getKey());</span><br><span class="line">        param.addParam(entry.getValue());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Class</span> <span class="variable">clz</span> <span class="operator">=</span> baseEntity.getClass();</span><br><span class="line">    <span class="type">String</span> <span class="variable">fullName</span> <span class="operator">=</span> baseEntity.getFullName();</span><br><span class="line">    Map&lt;String, ORMColumnInfo&gt; types = findColumnInfo(clz, fullName);</span><br><span class="line">    <span class="type">Entity</span> <span class="variable">entity</span> <span class="operator">=</span> MetaEntityHelper.getMetaEntity(fullName);</span><br><span class="line">    List&lt;Property&gt; elasticAttributes = entity.getElasticAttributes();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//buildSQL</span></span><br><span class="line">    <span class="keyword">for</span> (Property elasticProperty : elasticAttributes) &#123;</span><br><span class="line">        types.remove(elasticProperty.columnName());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">StringBuffer</span> <span class="variable">columnsForQuery</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">    <span class="keyword">for</span> (String columnName : types.keySet()) &#123;</span><br><span class="line">        columnsForQuery.append(columnName).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//删掉最后一个逗号</span></span><br><span class="line">    columnsForQuery.delete(columnsForQuery.length() - <span class="number">1</span>, columnsForQuery.length());</span><br><span class="line"></span><br><span class="line">    List&lt;OneToOneType&gt; parallelTypes = BizMetaHelper.getOneToOneField(baseEntity, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">    List&lt;OneToOneType&gt; characteristicTypes = BeanProcessorHelper.getCharacteristicOneToOneField(fullName);</span><br><span class="line">    <span class="comment">//改前：condition仅包括主键</span></span><br><span class="line">    <span class="comment">//String condition = BeanProcessorHelper.getPkColumn(baseEntity.getClass(), baseEntity.getFullName()) + &quot;=?&quot;;</span></span><br><span class="line">    <span class="comment">//改后：condition包括unionKeyMap中的所有Key值</span></span><br><span class="line">    <span class="type">StringBuffer</span> <span class="variable">condition</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">    <span class="keyword">for</span>(String s : conditionList)&#123;</span><br><span class="line">        condition.append(s + <span class="string">&quot;=? and &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    condition.delete(condition.length() - <span class="number">5</span>, condition.length());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.isEmpty(parallelTypes) &amp;&amp; CollectionUtils.isEmpty(characteristicTypes)) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">pkName</span> <span class="operator">=</span> BeanProcessorHelper.getPkColumn(clz, fullName);</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">hasPKField</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">StringBuffer</span> <span class="variable">mainSQL</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">        <span class="type">String</span> <span class="variable">tableName</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(clz, fullName);</span><br><span class="line">        <span class="keyword">if</span> (selectedFields == <span class="literal">null</span>) &#123;</span><br><span class="line">            mainSQL.append(<span class="string">&quot;SELECT &quot;</span>).append(columnsForQuery).append(<span class="string">&quot; FROM &quot;</span>).append(tableName);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            selectedFields = transPropertyNameToFieldNames(clz, fullName, selectedFields);</span><br><span class="line">            String[] columns = getValidNames(fullName, clz, types, baseEntity, selectedFields);</span><br><span class="line">            mainSQL.append(<span class="string">&quot;SELECT &quot;</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; columns.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (columns[i] != <span class="literal">null</span>) &#123;</span><br><span class="line">                    mainSQL.append(columns[i]).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">                    <span class="keyword">if</span> (columns[i].equalsIgnoreCase(pkName)) &#123;</span><br><span class="line">                        hasPKField = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!hasPKField) &#123;</span><br><span class="line">                mainSQL.append(pkName).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            mainSQL.setLength(mainSQL.length() - <span class="number">1</span>);</span><br><span class="line">            mainSQL.append(<span class="string">&quot; FROM &quot;</span>).append(tableName);</span><br><span class="line">        &#125;</span><br><span class="line">        mainSQL.append(<span class="string">&quot; WHERE &quot;</span>).append(condition);</span><br><span class="line">        <span class="type">BaseProcessor</span> <span class="variable">processor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanListProcessor</span>(baseEntity);</span><br><span class="line">        List&lt;T&gt; results = getJdbcSession().executeQuery(mainSQL.toString(), param, processor);</span><br><span class="line">        <span class="keyword">if</span> (results.size() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">            result = results.get(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;query for oneToOne .. &#123;&#125; &quot;</span>, clz.getClasses());</span><br><span class="line">        &#125;</span><br><span class="line">        Field[] fields = baseEntity.getClass().getDeclaredFields();</span><br><span class="line">        String[] propNames = <span class="keyword">new</span> <span class="title class_">String</span>[fields.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; fields.length; i++) &#123;</span><br><span class="line">            propNames[i] = fields[i].getName();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">pkName</span> <span class="operator">=</span> BeanProcessorHelper.getPkColumn(clz, fullName);</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">hasPKField</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">StringBuffer</span> <span class="variable">mainSQL</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">        <span class="type">String</span> <span class="variable">tableName</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(clz, fullName);</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">mapSQL</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        mapSQL.append(<span class="string">&quot;SELECT * FROM &quot;</span>).append(tableName).append(<span class="string">&quot; WHERE &quot;</span>).append(condition);</span><br><span class="line">        List&lt;Map&gt; mapList = getJdbcSession().executeQuery(mapSQL.toString(), param, <span class="keyword">new</span> <span class="title class_">MapListProcessor</span>());</span><br><span class="line">        <span class="keyword">if</span> (mapList.size() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">            resultMap = mapList.get(<span class="number">0</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;查询结果为空！&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (selectedFields == <span class="literal">null</span>) &#123;</span><br><span class="line">            mainSQL.append(<span class="string">&quot;SELECT &quot;</span>).append(columnsForQuery).append(<span class="string">&quot; FROM &quot;</span>).append(tableName).append(<span class="string">&quot; WHERE &quot;</span>).append(condition);</span><br><span class="line">            List&lt;T&gt; results = getJdbcSession().executeQuery(mainSQL.toString(), param, <span class="keyword">new</span> <span class="title class_">BeanListProcessor</span>(baseEntity));</span><br><span class="line">            <span class="keyword">if</span> (results.size() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">                result = results.get(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//特征</span></span><br><span class="line">            <span class="keyword">for</span> (OneToOneType oneToOneType : characteristicTypes) &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">childSQL</span> <span class="operator">=</span> buildSQLWithoutSelectFields(oneToOneType, clz, fullName, resultMap);</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotEmpty(childSQL)) &#123;</span><br><span class="line">                    characteristicEntityHandler(baseEntity, childSQL, fullName, result, ormAttributeSign);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//平行</span></span><br><span class="line">            <span class="keyword">for</span> (OneToOneType oneToOneType : parallelTypes) &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">childTable</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(oneToOneType.getTargetEntity(), oneToOneType.getTargetFullName());</span><br><span class="line">                <span class="type">String</span> <span class="variable">childSQL</span> <span class="operator">=</span> buildSQLWithoutSelectFields(oneToOneType, clz, fullName, resultMap);</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotEmpty(childSQL)) &#123;</span><br><span class="line">                    parallelEntityHandler(baseEntity, childSQL, childTable, result, ormAttributeSign);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String[] filterFileds = transPropertyNameToFieldNames(clz, fullName, selectedFields);</span><br><span class="line">            Set&lt;String&gt; filerdFieldSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">            filerdFieldSet.addAll(Arrays.asList(filterFileds));</span><br><span class="line">            <span class="type">StringBuilder</span> <span class="variable">columnBuilder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; filterFileds.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (filterFileds[i] != <span class="literal">null</span>) &#123;</span><br><span class="line">                    columnBuilder.append(filterFileds[i]).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">                    <span class="keyword">if</span> (filterFileds[i].equalsIgnoreCase(pkName)) &#123;</span><br><span class="line">                        hasPKField = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            columnBuilder.append(<span class="string">&quot;pubts&quot;</span>).append(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">            columnBuilder.append(<span class="string">&quot;dr&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (!hasPKField) &#123;</span><br><span class="line">                columnBuilder.append(<span class="string">&quot;,&quot;</span>).append(pkName);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">StringBuilder</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">            sql.append(<span class="string">&quot;SELECT &quot;</span>).append(columnBuilder).append(<span class="string">&quot; FROM &quot;</span>).append(tableName).append(<span class="string">&quot; WHERE &quot;</span>).append(condition);</span><br><span class="line">            <span class="type">BaseProcessor</span> <span class="variable">processor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanListProcessor</span>(baseEntity);</span><br><span class="line">            List&lt;T&gt; results = getJdbcSession().executeQuery(sql.toString(), param, processor);</span><br><span class="line">            <span class="keyword">if</span> (results.size() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">                result = results.get(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//特征</span></span><br><span class="line">            <span class="keyword">for</span> (OneToOneType oneToOneType : characteristicTypes) &#123;</span><br><span class="line">                <span class="type">Class</span> <span class="variable">childClz</span> <span class="operator">=</span> oneToOneType.getTargetEntity();</span><br><span class="line">                <span class="type">String</span> <span class="variable">childTable</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(childClz, oneToOneType.getTargetFullName());</span><br><span class="line">                <span class="type">String</span> <span class="variable">childSQL</span> <span class="operator">=</span> buildSQLWithSelectedFields(oneToOneType, clz, fullName, selectedFields, resultMap, childTable);</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotEmpty(childSQL)) &#123;</span><br><span class="line">                    characteristicEntityHandler(baseEntity, childSQL, fullName, result, ormAttributeSign);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//平行</span></span><br><span class="line">            <span class="keyword">for</span> (OneToOneType oneToOneType : parallelTypes) &#123;</span><br><span class="line">                <span class="type">Class</span> <span class="variable">childClz</span> <span class="operator">=</span> oneToOneType.getTargetEntity();</span><br><span class="line">                <span class="type">String</span> <span class="variable">childTable</span> <span class="operator">=</span> BeanProcessorHelper.getTableName(childClz, oneToOneType.getTargetFullName());</span><br><span class="line">                <span class="type">String</span> <span class="variable">childSQL</span> <span class="operator">=</span> buildSQLWithSelectedFields(oneToOneType, clz, fullName, selectedFields, resultMap, childTable);</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotEmpty(childSQL)) &#123;</span><br><span class="line">                    parallelEntityHandler(baseEntity, childSQL, childTable, result, ormAttributeSign);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-上传git"><a href="#3-3-上传git" class="headerlink" title="3.3.上传git"></a>3.3.上传git</h3><p>develop_wjc分支</p>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230213162630405.png" alt="image-20230213162630405"></p>
+<p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230213162720140.png" alt="image-20230213162720140"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/07/%E5%AE%9E%E4%B9%A0-03-MDD%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" rel="prev" title="实习-03-MDD框架学习">
+      <i class="fa fa-chevron-left"></i> 实习-03-MDD框架学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/02/13/%E5%AE%9E%E4%B9%A0-05-YTS%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B/" rel="next" title="实习-05-YTS测试用例">
+      实习-05-YTS测试用例 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-git%E6%8B%89%E5%8F%96yms-library%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">1.git拉取yms-library项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">1.1.问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%BF%9B%E8%A1%8Ctest%E6%8E%92%E6%9F%A5%E5%BC%82%E5%B8%B8%E6%8A%A5%E9%94%99%E7%AD%89"><span class="nav-number">2.</span> <span class="nav-text">2.进行test排查异常报错等</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1.测试过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testUpdate"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">测试test.BaseDAOTest#testUpdate</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testUpdate4"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">测试test.BaseDAOTest#testUpdate4</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testSaveWithPk"><span class="nav-number">2.0.1.0.3.</span> <span class="nav-text">测试test.BaseDAOTest#testSaveWithPk</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testSave"><span class="nav-number">2.0.1.0.4.</span> <span class="nav-text">测试test.BaseDAOTest#testSave</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testSaveList"><span class="nav-number">2.0.1.0.5.</span> <span class="nav-text">测试test.BaseDAOTest#testSaveList</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testSaveList2"><span class="nav-number">2.0.1.0.6.</span> <span class="nav-text">测试test.BaseDAOTest#testSaveList2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testDelete"><span class="nav-number">2.0.1.0.7.</span> <span class="nav-text">测试test.BaseDAOTest#testDelete</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testQueryAll"><span class="nav-number">2.0.1.0.8.</span> <span class="nav-text">测试test.BaseDAOTest#testQueryAll</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testQueryByClause"><span class="nav-number">2.0.1.0.9.</span> <span class="nav-text">测试test.BaseDAOTest#testQueryByClause</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95test-BaseDAOTest-testQueryByClause2"><span class="nav-number">2.0.1.0.10.</span> <span class="nav-text">测试test.BaseDAOTest#testQueryByClause2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E9%97%AE%E9%A2%98%E6%A2%B3%E7%90%86%E6%80%BB%E7%BB%93"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2.问题梳理总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3.解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-YMS%E6%8E%A7%E5%88%B6%E5%8F%B0%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E6%BA%90%EF%BC%88%E8%AF%97%E6%B6%B5%E8%A7%A3%E5%86%B3%EF%BC%89"><span class="nav-number">2.0.4.</span> <span class="nav-text">2.4.YMS控制台配置数据源（诗涵解决）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%BC%96%E5%86%99%E6%8E%A5%E5%8F%A3queryByUnionKeyMap%E5%AE%9E%E7%8E%B0%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.</span> <span class="nav-text">3.编写接口queryByUnionKeyMap实现联合查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E9%9C%80%E6%B1%82"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1.需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E4%BB%A3%E7%A0%81"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2.代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IYmsJdbcApi-queryByUnionKeyMap"><span class="nav-number">3.0.2.0.1.</span> <span class="nav-text">IYmsJdbcApi#queryByUnionKeyMap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AbstractDAO-queryByUnionKeyMap-amp-queryByUnionKeyMap"><span class="nav-number">3.0.2.0.2.</span> <span class="nav-text">AbstractDAO#queryByUnionKeyMap&amp;queryByUnionKeyMap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AbstractJdbcPersistenceManager-retrieveByPK-amp-retrieveByUnionKeyMap"><span class="nav-number">3.0.2.0.3.</span> <span class="nav-text">AbstractJdbcPersistenceManager#retrieveByPK&amp;retrieveByUnionKeyMap</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E4%B8%8A%E4%BC%A0git"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3.上传git</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="文晨"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">文晨</p>
+  <div class="site-description" itemprop="description">百学须先立志</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; Thu Apr 07 2022 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文晨</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
