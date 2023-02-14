@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"liketostudy.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1.YTS文档 一致性框架(YTS)设计文档-评审-new  1.1.技术了解1.1.1.分布式事务本质上来说，分布式事务就是为了保证不同数据库的数据一致性。    继续阅读：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;Daniel-Leung&#x2F;p&#x2F;fenbushishiwu20210825230930.html   1.1.2.认识打桩 什么是桩  桩，或称桩代码，是指用来代替关联代码或者未">
+  <meta name="description" content="YTS文档 一致性框架(YTS)设计文档-评审-new  技术了解分布式事务本质上来说，分布式事务就是为了保证不同数据库的数据一致性。    继续阅读：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;Daniel-Leung&#x2F;p&#x2F;fenbushishiwu20210825230930.html   认识打桩 什么是桩  桩，或称桩代码，是指用来代替关联代码或者未实现代码的代码。如果函数B用B1来代">
 <meta property="og:type" content="article">
 <meta property="og:title" content="实习-01-初步接触YTS、YMS、MDD">
 <meta property="og:url" content="http://liketostudy.com/2023/01/06/%E5%AE%9E%E4%B9%A0-01-%E5%88%9D%E6%AD%A5%E6%8E%A5%E8%A7%A6YTS%E3%80%81YMS%E3%80%81MDD/index.html">
 <meta property="og:site_name" content="琛的个人博客">
-<meta property="og:description" content="1.YTS文档 一致性框架(YTS)设计文档-评审-new  1.1.技术了解1.1.1.分布式事务本质上来说，分布式事务就是为了保证不同数据库的数据一致性。    继续阅读：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;Daniel-Leung&#x2F;p&#x2F;fenbushishiwu20210825230930.html   1.1.2.认识打桩 什么是桩  桩，或称桩代码，是指用来代替关联代码或者未">
+<meta property="og:description" content="YTS文档 一致性框架(YTS)设计文档-评审-new  技术了解分布式事务本质上来说，分布式事务就是为了保证不同数据库的数据一致性。    继续阅读：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;Daniel-Leung&#x2F;p&#x2F;fenbushishiwu20210825230930.html   认识打桩 什么是桩  桩，或称桩代码，是指用来代替关联代码或者未实现代码的代码。如果函数B用B1来代">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163020893.png">
 <meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163240498.png">
@@ -47,7 +47,7 @@
 <meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104162523785.png">
 <meta property="og:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104162552160.png">
 <meta property="article:published_time" content="2023-01-06T06:40:57.000Z">
-<meta property="article:modified_time" content="2023-02-14T06:57:00.440Z">
+<meta property="article:modified_time" content="2023-02-14T07:59:17.594Z">
 <meta property="article:author" content="文晨">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163020893.png">
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-14 14:57:00" itemprop="dateModified" datetime="2023-02-14T14:57:00+08:00">2023-02-14</time>
+                <time title="修改时间：2023-02-14 15:59:17" itemprop="dateModified" datetime="2023-02-14T15:59:17+08:00">2023-02-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,16 +253,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-YTS文档"><a href="#1-YTS文档" class="headerlink" title="1.YTS文档"></a>1.YTS文档</h1><blockquote>
+        <h1 id="YTS文档"><a href="#YTS文档" class="headerlink" title="YTS文档"></a>YTS文档</h1><blockquote>
 <p>一致性框架(YTS)设计文档-评审-new</p>
 </blockquote>
-<h2 id="1-1-技术了解"><a href="#1-1-技术了解" class="headerlink" title="1.1.技术了解"></a>1.1.技术了解</h2><h3 id="1-1-1-分布式事务"><a href="#1-1-1-分布式事务" class="headerlink" title="1.1.1.分布式事务"></a>1.1.1.分布式事务</h3><p>本质上来说，分布式事务就是为了保证不同数据库的数据一致性。</p>
+<h2 id="技术了解"><a href="#技术了解" class="headerlink" title="技术了解"></a>技术了解</h2><h3 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h3><p>本质上来说，分布式事务就是为了保证不同数据库的数据一致性。</p>
 <blockquote>
 <ul>
 <li><input disabled type="checkbox"> <strong>继续阅读</strong>：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Daniel-Leung/p/fenbushishiwu20210825230930.html">https://www.cnblogs.com/Daniel-Leung/p/fenbushishiwu20210825230930.html</a></li>
 </ul>
 </blockquote>
-<h3 id="1-1-2-认识打桩"><a href="#1-1-2-认识打桩" class="headerlink" title="1.1.2.认识打桩"></a>1.1.2.认识打桩</h3><blockquote>
+<h3 id="认识打桩"><a href="#认识打桩" class="headerlink" title="认识打桩"></a>认识打桩</h3><blockquote>
 <p>什么是桩</p>
 </blockquote>
 <p>桩，或称桩代码，是指用来代替关联代码或者未实现代码的代码。如果函数B用B1来代替，那么，B称为原函数，B1称为桩函数。打桩就是编写或生成桩代码。</p>
@@ -275,7 +275,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">externint <span class="title function_">B</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">A</span><span class="params">()</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="variable">ret</span> <span class="operator">=</span> B();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(ret == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">;<span class="comment">//do something</span></span><br><span class="line"></span><br><span class="line">elseif(ret == <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">;<span class="comment">//do something</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"></span><br><span class="line">;<span class="comment">//do something</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> ret;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如果函数B返回随机数，或者返回网络状态，或者返回环境温度，等等，则当调用其实际代码时，函数A很难测试，这时可以用桩函数B1来代替B，使其返回测试所需要的数据。</p>
-<h3 id="1-1-3-Spring事务了解"><a href="#1-1-3-Spring事务了解" class="headerlink" title="1.1.3.Spring事务了解"></a>1.1.3.Spring事务了解</h3><blockquote>
+<h3 id="Spring事务了解"><a href="#Spring事务了解" class="headerlink" title="Spring事务了解"></a>Spring事务了解</h3><blockquote>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/java123456111/article/details/124946361">https://blog.csdn.net/java123456111/article/details/124946361</a></p>
 </blockquote>
 <p>事务、事务特性、</p>
@@ -294,19 +294,19 @@
 <li><input disabled type="checkbox"> 2023&#x2F;1&#x2F;4，阅读未完成，1&#x2F;5继续阅读</li>
 </ul>
 </blockquote>
-<h3 id="1-1-4-消息队列"><a href="#1-1-4-消息队列" class="headerlink" title="1.1.4.消息队列"></a>1.1.4.消息队列</h3><p>消息队列中间件是<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F&spm=1001.2101.3001.7020">分布式系统</a>中重要的组件，主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。目前使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ</p>
-<h4 id="1-1-4-1-异步处理"><a href="#1-1-4-1-异步处理" class="headerlink" title="1.1.4.1.异步处理"></a>1.1.4.1.异步处理</h4><blockquote>
+<h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><p>消息队列中间件是<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F&spm=1001.2101.3001.7020">分布式系统</a>中重要的组件，主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。目前使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ</p>
+<h4 id="异步处理"><a href="#异步处理" class="headerlink" title="异步处理"></a>异步处理</h4><blockquote>
 <p>引入消息队列，将不是必须的业务逻辑，异步处理。</p>
 </blockquote>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163020893.png" alt="image-20230104163020893"></p>
-<h4 id="1-1-4-2-应用解耦"><a href="#1-1-4-2-应用解耦" class="headerlink" title="1.1.4.2.应用解耦"></a>1.1.4.2.应用解耦</h4><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163240498.png" alt="image-20230104163240498"></p>
-<h4 id="1-1-4-3-流量削峰"><a href="#1-1-4-3-流量削峰" class="headerlink" title="1.1.4.3.流量削峰"></a>1.1.4.3.流量削峰</h4><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163357668.png" alt="image-20230104163357668"></p>
+<h4 id="应用解耦"><a href="#应用解耦" class="headerlink" title="应用解耦"></a>应用解耦</h4><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163240498.png" alt="image-20230104163240498"></p>
+<h4 id="流量削峰"><a href="#流量削峰" class="headerlink" title="流量削峰"></a>流量削峰</h4><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163357668.png" alt="image-20230104163357668"></p>
 <blockquote>
 <ul>
 <li><input disabled type="checkbox"> 可以继续阅读<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_52622200/article/details/119765008">https://blog.csdn.net/weixin_52622200/article/details/119765008</a></li>
 </ul>
 </blockquote>
-<h3 id="1-1-5-Iris"><a href="#1-1-5-Iris" class="headerlink" title="1.1.5.Iris"></a>1.1.5.Iris</h3><p>Iris是一款Go语言中用来开发web应用的框架，该框架支持编写一次并在任何地方以最小的机器功率运行，如Android、ios、Linux和Windows等。该框架只需要一个可执行的服务就可以在平台上运行了。</p>
+<h3 id="Iris"><a href="#Iris" class="headerlink" title="Iris"></a>Iris</h3><p>Iris是一款Go语言中用来开发web应用的框架，该框架支持编写一次并在任何地方以最小的机器功率运行，如Android、ios、Linux和Windows等。该框架只需要一个可执行的服务就可以在平台上运行了。</p>
 <p>Iris框架以简单而强大的api而被开发者所熟悉。iris除了为开发者提供非常简单的访问方式外，还同样支持MVC。另外，用iris构建微服务也很容易。</p>
 <p>在iris框架的官方网站上，被称为速度最快的Go后端开发框架。在Iris的网站文档上，列出了该框架具备的一些特点和框架特性，列举如下：</p>
 <p>1）聚焦高性能</p>
@@ -318,22 +318,22 @@
 <p>7）完整 REST API</p>
 <p>8）能定制 HTTP 错误</p>
 <p>9）源码改变后自动加载</p>
-<h3 id="1-1-6-Dubbo"><a href="#1-1-6-Dubbo" class="headerlink" title="1.1.6.Dubbo"></a>1.1.6.Dubbo</h3><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163812693.png" alt="image-20230104163812693"></p>
+<h3 id="Dubbo"><a href="#Dubbo" class="headerlink" title="Dubbo"></a>Dubbo</h3><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104163812693.png" alt="image-20230104163812693"></p>
 <blockquote>
 <ul>
 <li><input disabled type="checkbox"> <a target="_blank" rel="noopener" href="https://cn.dubbo.apache.org/zh/overview/what/overview/">https://cn.dubbo.apache.org/zh/overview/what/overview/</a></li>
 </ul>
 </blockquote>
-<h3 id="1-1-7-了解iuap"><a href="#1-1-7-了解iuap" class="headerlink" title="1.1.7.了解iuap"></a>1.1.7.了解iuap</h3><p>iuap聚焦PaaS、支撑SaaS、适配多种IaaS，遵循开放、开源、生态的发展原则，为企业提供互联网开发、测试、构造、发布、部署、云运维、云运营、云集成等各种平台技术能力，支撑企业构建高并发、高性能、高可用、安全的C2B、O2O、B2B 或B2B2C 等企业互联网应用或服务。</p>
-<h3 id="1-1-8-HttpClient"><a href="#1-1-8-HttpClient" class="headerlink" title="1.1.8.HttpClient"></a>1.1.8.HttpClient</h3><h2 id="1-2-文档阅读"><a href="#1-2-文档阅读" class="headerlink" title="1.2.文档阅读"></a>1.2.文档阅读</h2><h3 id="1-2-1-认知"><a href="#1-2-1-认知" class="headerlink" title="1.2.1.认知"></a>1.2.1.认知</h3><p>本框架目前针对YonSuite（后续支持采购、财务、人力、协同等各领域云）如何保障各个微服务之间的数据一致性考虑</p>
+<h3 id="了解iuap"><a href="#了解iuap" class="headerlink" title="了解iuap"></a>了解iuap</h3><p>iuap聚焦PaaS、支撑SaaS、适配多种IaaS，遵循开放、开源、生态的发展原则，为企业提供互联网开发、测试、构造、发布、部署、云运维、云运营、云集成等各种平台技术能力，支撑企业构建高并发、高性能、高可用、安全的C2B、O2O、B2B 或B2B2C 等企业互联网应用或服务。</p>
+<h3 id="HttpClient"><a href="#HttpClient" class="headerlink" title="HttpClient"></a>HttpClient</h3><h2 id="文档阅读"><a href="#文档阅读" class="headerlink" title="文档阅读"></a>文档阅读</h2><h3 id="认知"><a href="#认知" class="headerlink" title="认知"></a>认知</h3><p>本框架目前针对YonSuite（后续支持采购、财务、人力、协同等各领域云）如何保障各个微服务之间的数据一致性考虑</p>
 <p>框架和iuap平台下的MDD、MDF及RPC结合，结合本地数据库事务提交机制，目前支持Mysql。后续逐步支持单纯RPC方式或者HTTP client方式。</p>
 <p>技术中台的云端，提供事务监控中心，监控和查看未及时完成的及未正确结束的长事务，支持云端查看错误堆栈、链路拓扑图、下发重试命令等功能。</p>
-<h3 id="1-2-2-名词解释"><a href="#1-2-2-名词解释" class="headerlink" title="1.2.2.名词解释"></a>1.2.2.名词解释</h3><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104164808975.png" alt="image-20230104164808975"></p>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104164808975.png" alt="image-20230104164808975"></p>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104164840000.png" alt="image-20230104164840000"></p>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104164850758.png" alt="image-20230104164850758"></p>
-<h3 id="1-2-3-功能架构"><a href="#1-2-3-功能架构" class="headerlink" title="1.2.3.功能架构"></a>1.2.3.功能架构</h3><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104164925319.png" alt="image-20230104164925319"></p>
+<h3 id="功能架构"><a href="#功能架构" class="headerlink" title="功能架构"></a>功能架构</h3><p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104164925319.png" alt="image-20230104164925319"></p>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104165106147.png" alt="image-20230104165106147"></p>
-<h3 id="1-2-4-技术架构设计"><a href="#1-2-4-技术架构设计" class="headerlink" title="1.2.4.技术架构设计"></a>1.2.4.技术架构设计</h3><ul>
+<h3 id="技术架构设计"><a href="#技术架构设计" class="headerlink" title="技术架构设计"></a>技术架构设计</h3><ul>
 <li><p><input disabled type="checkbox"> 
 需要再深入了解下事务协调器、事务管理器、运行时（TCC的try、confirm、cancel</p>
 </li>
@@ -341,7 +341,7 @@
 核心类和枚举</p>
 </li>
 </ul>
-<h3 id="1-2-5-逻辑架构设计"><a href="#1-2-5-逻辑架构设计" class="headerlink" title="1.2.5.逻辑架构设计"></a>1.2.5.逻辑架构设计</h3><h4 id="1-2-5-1-核心业务场景"><a href="#1-2-5-1-核心业务场景" class="headerlink" title="1.2.5.1.核心业务场景"></a>1.2.5.1.核心业务场景</h4><ul>
+<h3 id="逻辑架构设计"><a href="#逻辑架构设计" class="headerlink" title="逻辑架构设计"></a>逻辑架构设计</h3><h4 id="核心业务场景"><a href="#核心业务场景" class="headerlink" title="核心业务场景"></a>核心业务场景</h4><ul>
 <li>销售出库信息回写（MDD）</li>
 </ul>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104165531849.png" alt="image-20230104165531849"></p>
@@ -353,7 +353,7 @@
 <li>生态应用调用用友云开放服务（HTTP）</li>
 </ul>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104165644171.png" alt="image-20230104165644171"></p>
-<h4 id="1-2-5-2-领域概念模型"><a href="#1-2-5-2-领域概念模型" class="headerlink" title="1.2.5.2.领域概念模型"></a>1.2.5.2.领域概念模型</h4><ul>
+<h4 id="领域概念模型"><a href="#领域概念模型" class="headerlink" title="领域概念模型"></a>领域概念模型</h4><ul>
 <li>BASE理论模型</li>
 </ul>
 <p>​        通过牺牲强一致性来获得可用性，并允许数据在一段时间内是不一致的，但最终达到一致状态</p>
@@ -389,7 +389,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="1-2-5-3-核心场景及流程"><a href="#1-2-5-3-核心场景及流程" class="headerlink" title="1.2.5.3.核心场景及流程"></a>1.2.5.3.核心场景及流程</h4><ul>
+<h4 id="核心场景及流程"><a href="#核心场景及流程" class="headerlink" title="核心场景及流程"></a>核心场景及流程</h4><ul>
 <li>MDD框架正向业务调用</li>
 <li>正向调用报错后的业务回滚</li>
 <li>回滚报错后的错误信息上报</li>
@@ -397,18 +397,18 @@
 <li><strong>分支事务嵌套链式长事务的协调执行</strong></li>
 <li><strong>分支事务嵌套链式长事务的逐级回滚</strong></li>
 </ul>
-<h1 id="2-MDD-模型驱动开发"><a href="#2-MDD-模型驱动开发" class="headerlink" title="2.MDD(模型驱动开发)"></a>2.MDD(模型驱动开发)</h1><p>传统的瀑布式开发流程如下图，每一个需求的产生都需要进行需求分析、设计、编码、测试等一系列流程。</p>
+<h1 id="MDD-模型驱动开发"><a href="#MDD-模型驱动开发" class="headerlink" title="MDD(模型驱动开发)"></a>MDD(模型驱动开发)</h1><p>传统的瀑布式开发流程如下图，每一个需求的产生都需要进行需求分析、设计、编码、测试等一系列流程。</p>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104161534533.png" alt="image-20230104161534533"></p>
 <p>模型驱动框架的开发流程如下图：</p>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104161552132.png" alt="image-20230104161552132"></p>
 <p>模型驱动的优势在于<strong>不用为每个需求定制化的编码</strong>，而是通过高度抽象化的模型映射到具体的业务元数据上来实现需求功能；这样大大减少了编码的重复工作，同时也提高了软件的可变更性。</p>
-<h2 id="2-1-模型驱动架构（MDA，Model-Driven-Architecture）"><a href="#2-1-模型驱动架构（MDA，Model-Driven-Architecture）" class="headerlink" title="2.1.模型驱动架构（MDA，Model Driven Architecture）"></a>2.1.模型驱动架构（MDA，Model Driven Architecture）</h2><p>MDA的三大目标：轻便可移植性、互操作性和可重用性，采用了模型和技术分离的架构设计。</p>
+<h2 id="模型驱动架构（MDA，Model-Driven-Architecture）"><a href="#模型驱动架构（MDA，Model-Driven-Architecture）" class="headerlink" title="模型驱动架构（MDA，Model Driven Architecture）"></a>模型驱动架构（MDA，Model Driven Architecture）</h2><p>MDA的三大目标：轻便可移植性、互操作性和可重用性，采用了模型和技术分离的架构设计。</p>
 <p>使用一定的建模标准（UML、MOF、XMI等）构建描述应用程序或集成系统的业务功能和行为的模型，这些模型独立于具体平台并且和实现具体业务功能和行为的特定技术代码分离，从而实现了业务和应用程序逻辑与底层平台技术的分离，这种分离也带来了应用程序的核心与技术变化周期的隔离。系统的业务部分和技术部分都可以各自进化而互不影响 - 业务逻辑响应业务需求，技术部分按业务需要利用新的技术开发。</p>
 <p><img src="https://bucket-wjc-imageload.oss-cn-beijing.aliyuncs.com/imageload-for-typora/image-20230104162015402.png" alt="image-20230104162015402"></p>
 <p>上图为MDA 结构示意图。最左侧为OMG提出的架构理论，其次是 MDA 的核心技术：<strong>MOF</strong> （ Meta Object Facility ，元对象设施）、 <strong>CWM</strong> （Common Warehouse Metamodel ，公共数据仓库元模型）和 <strong>UML</strong> . MDA 的主要工作就是要把基于这些技术建立的PIM 转换到不同的中间件平台上，得到对应的 PSM .PSM中给出的是目前主要针对的实现平台：CORBA 、 XML 、JAVA 、 Web Services 和 .NET .显然，随着技术的发展，这个列表将不断扩充。最后是基于PSM平台相关模型在公共服务及垂直领域等组件或应用中进行模型驱动开发。</p>
-<h2 id="2-2-领域驱动设计-x2F-模型驱动设计（DDD，Domain-Driven-Design）"><a href="#2-2-领域驱动设计-x2F-模型驱动设计（DDD，Domain-Driven-Design）" class="headerlink" title="2.2.领域驱动设计&#x2F;模型驱动设计（DDD，Domain-Driven Design）"></a>2.2.领域驱动设计&#x2F;模型驱动设计（DDD，Domain-Driven Design）</h2><p>DDD是由Eric Evans最先提出，目的是对软件所涉及到的领域进行建模，以应对系统规模过大时引起的软件复杂性的问题。整个过程大概是这样的，开发团队和领域专家一起通过通用语言（Ubiquitous Language）去理解和消化领域知识，从领域知识中提取和划分为一个一个的子领域（核心子域，通用子域，支撑子域），并在子领域上建立模型，再重复以上步骤，这样周而复始，构建出一套符合当前领域的模型。</p>
+<h2 id="领域驱动设计-x2F-模型驱动设计（DDD，Domain-Driven-Design）"><a href="#领域驱动设计-x2F-模型驱动设计（DDD，Domain-Driven-Design）" class="headerlink" title="领域驱动设计&#x2F;模型驱动设计（DDD，Domain-Driven Design）"></a>领域驱动设计&#x2F;模型驱动设计（DDD，Domain-Driven Design）</h2><p>DDD是由Eric Evans最先提出，目的是对软件所涉及到的领域进行建模，以应对系统规模过大时引起的软件复杂性的问题。整个过程大概是这样的，开发团队和领域专家一起通过通用语言（Ubiquitous Language）去理解和消化领域知识，从领域知识中提取和划分为一个一个的子领域（核心子域，通用子域，支撑子域），并在子领域上建立模型，再重复以上步骤，这样周而复始，构建出一套符合当前领域的模型。</p>
 <p>建模的过程是由不同阶段的成员来完成，有些模型之间有引用关系，应用软件通过所有人的建模工作而构建起来。</p>
-<h2 id="2-3-模型驱动开发（MDD，-Model-Driven-Development）"><a href="#2-3-模型驱动开发（MDD，-Model-Driven-Development）" class="headerlink" title="2.3.模型驱动开发（MDD， Model Driven Development）"></a>2.3.模型驱动开发（MDD， Model Driven Development）</h2><p>模型驱动开发框架（MDF， MDD Framework）</p>
+<h2 id="模型驱动开发（MDD，-Model-Driven-Development）"><a href="#模型驱动开发（MDD，-Model-Driven-Development）" class="headerlink" title="模型驱动开发（MDD， Model Driven Development）"></a>模型驱动开发（MDD， Model Driven Development）</h2><p>模型驱动开发框架（MDF， MDD Framework）</p>
 <p>MDF 实际上就是一套开发框架，可以是基于spring、spring boot 等技术开发框架搭建的<strong>脚手架</strong>，承载了模型驱动相关的设计、开发方法等的编码框架。</p>
 <p>MDA环境下的系统开发方式就是在开发活动中通过创建各种模型精确描述不同的问题域，并利用模型转换来驱动包括分析、设计和实现等在内的整个软件开发过程。</p>
 <p>不难看出<strong>MDA说的是整体的软件架构设计使用的是模型驱动；而在软件开发的过程中，对不同领域的业务需求进行分析、抽象建模和技术框架分层所常用的分析方法就是DDD；整个软件的开发活动就称之为MDD</strong>。</p>
@@ -436,7 +436,7 @@
 <blockquote>
 <p>继续阅读：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43145299/article/details/122623568">https://blog.csdn.net/weixin_43145299/article/details/122623568</a></p>
 </blockquote>
-<h1 id="3-YMS文档"><a href="#3-YMS文档" class="headerlink" title="3.YMS文档"></a>3.YMS文档</h1>
+<h1 id="YMS文档"><a href="#YMS文档" class="headerlink" title="YMS文档"></a>YMS文档</h1>
     </div>
 
     
@@ -516,7 +516,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-YTS%E6%96%87%E6%A1%A3"><span class="nav-number">1.</span> <span class="nav-text">1.YTS文档</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%8A%80%E6%9C%AF%E4%BA%86%E8%A7%A3"><span class="nav-number">1.1.</span> <span class="nav-text">1.1.技术了解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1.分布式事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E8%AE%A4%E8%AF%86%E6%89%93%E6%A1%A9"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2.认识打桩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-Spring%E4%BA%8B%E5%8A%A1%E4%BA%86%E8%A7%A3"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.1.3.Spring事务了解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.1.4.消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-4-1-%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">1.1.4.1.异步处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-4-2-%E5%BA%94%E7%94%A8%E8%A7%A3%E8%80%A6"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">1.1.4.2.应用解耦</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-4-3-%E6%B5%81%E9%87%8F%E5%89%8A%E5%B3%B0"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">1.1.4.3.流量削峰</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-5-Iris"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.1.5.Iris</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-6-Dubbo"><span class="nav-number">1.1.6.</span> <span class="nav-text">1.1.6.Dubbo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-7-%E4%BA%86%E8%A7%A3iuap"><span class="nav-number">1.1.7.</span> <span class="nav-text">1.1.7.了解iuap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-8-HttpClient"><span class="nav-number">1.1.8.</span> <span class="nav-text">1.1.8.HttpClient</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%96%87%E6%A1%A3%E9%98%85%E8%AF%BB"><span class="nav-number">1.2.</span> <span class="nav-text">1.2.文档阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E8%AE%A4%E7%9F%A5"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1.认知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2.2.名词解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E5%8A%9F%E8%83%BD%E6%9E%B6%E6%9E%84"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.2.3.功能架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-4-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.2.4.技术架构设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-5-%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.5.</span> <span class="nav-text">1.2.5.逻辑架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-5-1-%E6%A0%B8%E5%BF%83%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">1.2.5.1.核心业务场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-5-2-%E9%A2%86%E5%9F%9F%E6%A6%82%E5%BF%B5%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">1.2.5.2.领域概念模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-5-3-%E6%A0%B8%E5%BF%83%E5%9C%BA%E6%99%AF%E5%8F%8A%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">1.2.5.3.核心场景及流程</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MDD-%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91"><span class="nav-number">2.</span> <span class="nav-text">2.MDD(模型驱动开发)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84%EF%BC%88MDA%EF%BC%8CModel-Driven-Architecture%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">2.1.模型驱动架构（MDA，Model Driven Architecture）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1-x2F-%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1%EF%BC%88DDD%EF%BC%8CDomain-Driven-Design%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2.领域驱动设计&#x2F;模型驱动设计（DDD，Domain-Driven Design）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%88MDD%EF%BC%8C-Model-Driven-Development%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">2.3.模型驱动开发（MDD， Model Driven Development）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-YMS%E6%96%87%E6%A1%A3"><span class="nav-number">3.</span> <span class="nav-text">3.YMS文档</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#YTS%E6%96%87%E6%A1%A3"><span class="nav-number">1.</span> <span class="nav-text">YTS文档</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E4%BA%86%E8%A7%A3"><span class="nav-number">1.1.</span> <span class="nav-text">技术了解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.1.1.</span> <span class="nav-text">分布式事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A4%E8%AF%86%E6%89%93%E6%A1%A9"><span class="nav-number">1.1.2.</span> <span class="nav-text">认识打桩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring%E4%BA%8B%E5%8A%A1%E4%BA%86%E8%A7%A3"><span class="nav-number">1.1.3.</span> <span class="nav-text">Spring事务了解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">1.1.4.</span> <span class="nav-text">消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">异步处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E8%A7%A3%E8%80%A6"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">应用解耦</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%81%E9%87%8F%E5%89%8A%E5%B3%B0"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">流量削峰</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Iris"><span class="nav-number">1.1.5.</span> <span class="nav-text">Iris</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dubbo"><span class="nav-number">1.1.6.</span> <span class="nav-text">Dubbo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3iuap"><span class="nav-number">1.1.7.</span> <span class="nav-text">了解iuap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpClient"><span class="nav-number">1.1.8.</span> <span class="nav-text">HttpClient</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E9%98%85%E8%AF%BB"><span class="nav-number">1.2.</span> <span class="nav-text">文档阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A4%E7%9F%A5"><span class="nav-number">1.2.1.</span> <span class="nav-text">认知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="nav-number">1.2.2.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E6%9E%B6%E6%9E%84"><span class="nav-number">1.2.3.</span> <span class="nav-text">功能架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.4.</span> <span class="nav-text">技术架构设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.5.</span> <span class="nav-text">逻辑架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">核心业务场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E6%A6%82%E5%BF%B5%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">领域概念模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%9C%BA%E6%99%AF%E5%8F%8A%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">核心场景及流程</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MDD-%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91"><span class="nav-number">2.</span> <span class="nav-text">MDD(模型驱动开发)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84%EF%BC%88MDA%EF%BC%8CModel-Driven-Architecture%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">模型驱动架构（MDA，Model Driven Architecture）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1-x2F-%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1%EF%BC%88DDD%EF%BC%8CDomain-Driven-Design%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">领域驱动设计&#x2F;模型驱动设计（DDD，Domain-Driven Design）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%88MDD%EF%BC%8C-Model-Driven-Development%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">模型驱动开发（MDD， Model Driven Development）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#YMS%E6%96%87%E6%A1%A3"><span class="nav-number">3.</span> <span class="nav-text">YMS文档</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
